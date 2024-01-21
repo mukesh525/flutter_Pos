@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:mynu/manage_order/servies/menu_model.dart';
 import 'package:mynu/manage_order/servies/orderProvider.dart';
 import 'package:provider/provider.dart';
 
 import 'manage_table/main/home_screen.dart';
 import 'manage_table/servies/model.dart' as MyNuModel;
+import 'manage_order/servies/menu_model.dart' as MyNewModel;
 import 'manage_table/servies/tableProvider.dart';
 
 import 'package:hive/hive.dart';
@@ -17,6 +19,7 @@ void main() async {
   Hive.init(appDocumentDir.path);
   Hive.registerAdapter<MyNuModel.TableGroup>(MyNuModel.TableGroupAdapter());
   Hive.registerAdapter<MyNuModel.Table>(MyNuModel.TableAdapter());
+  Hive.registerAdapter<MyNewModel.MenuResponse>(MyNewModel.MenuResponseAdapter());
 
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,

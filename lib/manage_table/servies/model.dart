@@ -1,5 +1,7 @@
 import 'package:hive/hive.dart';
 
+import '../Utils.dart';
+
 part 'model.g.dart';
 
 @HiveType(typeId: 0)
@@ -12,6 +14,7 @@ class TableGroup {
 
   @HiveField(2)
   List<Table> tables;
+
 
   TableGroup({required this.id, required this.name, required this.tables});
 
@@ -35,6 +38,8 @@ class Table {
 
   @HiveField(1)
   String name;
+
+  int status = 1;
 
   Table({required this.id, required this.name});
 

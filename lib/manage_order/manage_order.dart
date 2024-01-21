@@ -16,13 +16,14 @@ class ManageOrderScreen extends StatelessWidget {
           children: [
             // Include your CategorySideBar widget here
             CategorySideBar(),
-            Consumer<OrderProvider>(
-              builder: (context, controller, child) {
-                return Expanded(
-                  child: MenuContent(),
-                );
-              },
-            ),
+            // Consumer<OrderProvider>(
+            //
+            //   builder: (context, controller, child) {
+            //     return Expanded(
+            //       child: MenuContent(),
+            //     );
+            //   },
+            // ),
           ],
         ),
       ),

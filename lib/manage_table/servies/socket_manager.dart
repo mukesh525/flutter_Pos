@@ -11,7 +11,7 @@ class SocketManager {
 
   late IO.Socket socket;
   static const socketUrl =
-      'https://sputnik.mynu.app/api/v1/'; // Replace with your sample URL
+      'https://sputnik.mynu.app'; // Replace with your sample URL
 
   void initializeSocket() {
     socket = IO.io(socketUrl, <String, dynamic>{
@@ -25,6 +25,8 @@ class SocketManager {
     // Listen for connect event
     socket.on('connect', (_) {
       print('Socket connected');
+
+      // socket.emit("deviceSync", {"restaurantId": "5d68ad588085a04652357431"})
     });
 
     // Listen for disconnect event

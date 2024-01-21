@@ -1,53 +1,46 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:mynu/manage_order/servies/menu_model.dart' as MenuModel;
 
 import 'category_model.dart';
+import 'hive_service.dart';
+import 'menu_model.dart';
 import 'orderModel.dart';
 import 'service.dart';
 
 class OrderProvider extends ChangeNotifier {
   TableService _tableService = TableService();
-  List<ModelCategory> _categories = [
-    ModelCategory(
-        name: 'Fast Food',
-        icon: Icons.category,
-        color: Colors.green,
-        menuItems: [
-          'Beverages',
-          'Burger',
-          'Egg',
-          'Chicken',
-          'Chakhna',
-          'Chinese',
-          'Snacks',
-          'Soup',
-          'Garlic Bread'
-        ],
-        isExpanded: true),
-    ModelCategory(
-        name: 'Beverages',
-        icon: Icons.category,
-        color: Colors.green,
-        menuItems: ['Item 3', 'Item 4'],
-        isExpanded: false),
-    ModelCategory(
-        name: 'Burger',
-        icon: Icons.category,
-        color: Colors.green,
-        menuItems: ['Item 3', 'Item 4'],
-        isExpanded: false),
-    ModelCategory(
-        name: 'EGG',
-        icon: Icons.category,
-        color: Colors.green,
-        menuItems: ['Item 3', 'Item 4'],
-        isExpanded: false),
-    // Add more categories with their respective menu items
-  ];
-
+  final HiveService _hiveService = HiveService();
+  List<MenuModel.Category> categories = [];
   List<OrderItem> _orderItems = [];
 
   List<OrderItem> get orderItems => _orderItems;
+
+  Future<bool> isHiveEmpty() async {
+    final box = await Hive.openBox<List<MenuModel.Category>>('menuBox');
+    final isEmpty = box.isEmpty;
+    await box.close();
+    return isEmpty;
+  }
+
+  Future<void> fetchData() async {
+    final _isHiveEmpty = await isHiveEmpty();
+    if (_isHiveEmpty) {
+      try {
+        MenuResponse response = await _tableService.fetchDataFromUrl();
+        await _hiveService.saveMenuResponseToHive(response);
+        categories = response.result!.categories!;
+      } catch (e) {
+        print('Error fetching data from API: $e');
+      }
+    } else {
+      MenuResponse response = await _hiveService.getSavedMenuResponseFromHive();
+      categories = response.result!.categories!;
+    }
+
+    notifyListeners();
+  }
 
   void addItem(OrderItem item) {
     _orderItems.add(item);
@@ -64,14 +57,13 @@ class OrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<ModelCategory> get categories => _categories;
-
   int selectedItem = 1;
 
   TableService get tableService => _tableService;
 
   OrderProvider() {
     fetchTableData(selectedItem);
+    fetchData();
   }
 
   int _selectedCategoryIndex = -1; // Initialize with an invalid index
@@ -102,8 +94,8 @@ class OrderProvider extends ChangeNotifier {
   }
 
   void toggleCategoryExpansion(int categoryIndex) {
-    _categories[categoryIndex].isExpanded =
-        !_categories[categoryIndex].isExpanded;
+    categories[categoryIndex].isExpanded =
+        !categories[categoryIndex].isExpanded;
     notifyListeners();
   }
 

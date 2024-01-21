@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mynu/manage_order/servies/category_model.dart';
+import 'package:mynu/manage_order/servies/menu_model.dart';
 import 'package:mynu/manage_order/servies/orderProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +23,7 @@ class CategorySideBar extends StatelessWidget {
         physics: NeverScrollableScrollPhysics(),
         itemCount: orderProvider.categories.length,
         itemBuilder: (BuildContext context, int categoryIndex) {
-          ModelCategory category = orderProvider.categories[categoryIndex];
+          Category category = orderProvider.categories[categoryIndex];
           int selectedMenuItemIndex =
               orderProvider.selectedMenuItems[categoryIndex] ?? -1;
 
@@ -43,18 +44,18 @@ class CategorySideBar extends StatelessWidget {
                           ? Colors.orangeAccent
                           : Colors.white60,
                       leading: Icon(
-                        category.icon,
-                        color: category.color,
+                        Icons.add_box,
+                        color: Colors.grey,
                       ),
                       title: Container(
                         width: double.infinity,
                         child: Transform.translate(
                           offset: const Offset(-10, 0),
                           child: Text(
-                            category.name,
+                            category.name!,
                             style: TextStyle(
                               fontSize: 15.0,
-                              color: category.color,
+                              color: Colors.grey,
                             ),
                             textAlign: TextAlign.start,
                           ),
@@ -70,7 +71,7 @@ class CategorySideBar extends StatelessWidget {
                 body: Column(
                   children: [
                     for (int menuIndex = 0;
-                        menuIndex < category.menuItems.length;
+                        menuIndex < category.groups!.length;
                         menuIndex++)
                       Container(
                         color: menuIndex == selectedMenuItemIndex
@@ -79,7 +80,7 @@ class CategorySideBar extends StatelessWidget {
                             : Colors.grey,
                         child: ListTile(
                           title: Text(
-                            category.menuItems[menuIndex],
+                            category.groups![menuIndex].name!,
                             style: TextStyle(
                                 color: Colors
                                     .white // Set your desired selected color
@@ -88,7 +89,7 @@ class CategorySideBar extends StatelessWidget {
                           onTap: () {
                             // Handle menu item click
                             print(
-                                'Menu Item Clicked: ${category.menuItems[menuIndex]}');
+                                'Menu Item Clicked: ${category.groups![menuIndex].name}');
                             orderProvider.setSelectedMenuItem(
                                 categoryIndex, menuIndex);
                           },

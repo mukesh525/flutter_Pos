@@ -12,13 +12,7 @@ Color getRandomColor() {
   );
 }
 
-enum TableStatus {
-  OPEN,
-  SCANNED,
-  ORDERED,
-  DISABLED,
-  PAID,
-}
+enum TableStatus { OPEN, SCANNED, ORDERED, DISABLED, PAID }
 
 class TableStatusMapping {
   static const Map<TableStatus, Color> statusLabels = {
@@ -26,8 +20,30 @@ class TableStatusMapping {
     TableStatus.SCANNED: Colors.yellow,
     TableStatus.ORDERED: Colors.green,
     TableStatus.DISABLED: Colors.grey,
-    TableStatus.PAID: Colors.orangeAccent,
+    TableStatus.PAID: Colors.orangeAccent
   };
+}
+
+TableStatus getTableStatus(int status) {
+
+  switch (status) {
+    case 1:
+      return TableStatus.OPEN;
+    case 2:
+      return TableStatus.SCANNED;
+    case 3:
+      return TableStatus.ORDERED;
+    case 4:
+      return TableStatus.DISABLED;
+    case 5:
+      return TableStatus.PAID;
+    default:
+      return TableStatus.OPEN;
+  }
+}
+
+Color? getTableStatusColor(int status) {
+  return TableStatusMapping.statusLabels[getTableStatus(status)];
 }
 
 Color? getRandomStatus() {

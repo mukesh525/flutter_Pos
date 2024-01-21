@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class TableItem extends StatefulWidget {
   const TableItem({
     Key? key,
@@ -8,19 +7,20 @@ class TableItem extends StatefulWidget {
     required this.animate,
     required this.color,
     required this.onItemTap,
+    required this.showNotification, // New parameter to indicate whether to show the notification icon
   }) : super(key: key);
 
   final String name;
   final bool animate;
   final Color color;
-  final Function( BuildContext, String) onItemTap;
+  final Function(BuildContext, String) onItemTap;
+  final bool showNotification; // Indicates whether to show the notification icon
 
   @override
   _TableItemState createState() => _TableItemState();
 }
 
-class _TableItemState extends State<TableItem>
-    with SingleTickerProviderStateMixin {
+class _TableItemState extends State<TableItem> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _blinkAnimation;
 
@@ -70,31 +70,52 @@ class _TableItemState extends State<TableItem>
       onTap: () {
         widget.onItemTap(context, widget.name);
       },
-      child: AnimatedBuilder(
-        animation: _animationController,
-        builder: (context, child) {
-          return Opacity(
-            opacity: _blinkAnimation.value,
-            child: Container(
-              width: 150.0, // Set the desired width
-              height: 100.0, // Set the desired height
-              decoration: BoxDecoration(
-                color: widget.animate ? widget.color : Colors.white60,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.grey, width: 2),
-              ),
-              child: Center(
-                child: Text(
-                  widget.name,
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    color: widget.animate ? Colors.black : Colors.black54,
+      child: Stack(
+        children: [
+          AnimatedBuilder(
+            animation: _animationController,
+            builder: (context, child) {
+              return Opacity(
+                opacity: _blinkAnimation.value,
+                child: Container(
+                  width: 150.0, // Set the desired width
+                  height: 100.0, // Set the desired height
+                  decoration: BoxDecoration(
+                    color: widget.animate ? widget.color : Colors.white60,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.grey, width: 2),
                   ),
+                  child: Center(
+                    child: Text(
+                      widget.name,
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        color: widget.animate ? Colors.black : Colors.black54,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+          if (widget.showNotification)
+            Positioned(
+              top: -2,
+              right: 1,
+              child: Container(
+                padding: EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.white,
+                ),
+                child: Icon(
+                  Icons.notifications,
+                  color: Colors.redAccent,
+                  size: 20,
                 ),
               ),
             ),
-          );
-        },
+        ],
       ),
     );
   }
