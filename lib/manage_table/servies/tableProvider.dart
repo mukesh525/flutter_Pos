@@ -36,7 +36,8 @@ class TableProvider extends ChangeNotifier {
   void listenForSocketEvent() {
     _socketManager.socket
         .emit("join", {"restaurantId": "5d68ad588085a04652357431"});
-    _socketManager.socket.on('table.sync', (data) {
+    _socketManager.socket.on('table.sync', (data) async {
+      tableGroup = await _tableService.fetchDataFromUrl();
       if (data is List && data.isNotEmpty) {
         for (var tableData in data[0]["tables"]) {
           final String tableId = tableData['id'];
