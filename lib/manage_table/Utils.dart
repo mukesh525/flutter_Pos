@@ -13,18 +13,20 @@ Color getRandomColor() {
 }
 
 enum TableStatus {
-  orderReady,
-  attenion,
-  billing,
-  idle,
+  OPEN,
+  SCANNED,
+  ORDERED,
+  DISABLED,
+  PAID,
 }
 
 class TableStatusMapping {
   static const Map<TableStatus, Color> statusLabels = {
-    TableStatus.orderReady: Colors.lightGreen,
-    TableStatus.attenion: Colors.orangeAccent,
-    TableStatus.billing: Colors.redAccent,
-    TableStatus.idle: Colors.white60,
+    TableStatus.OPEN: Colors.white,
+    TableStatus.SCANNED: Colors.yellow,
+    TableStatus.ORDERED: Colors.green,
+    TableStatus.DISABLED: Colors.grey,
+    TableStatus.PAID: Colors.orangeAccent,
   };
 }
 

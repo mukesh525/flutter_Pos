@@ -6,7 +6,7 @@ import 'category_sidebar.dart';
 import 'menu_content.dart';
 
 class ManageOrderScreen extends StatelessWidget {
-  const ManageOrderScreen({super.key});
+  const ManageOrderScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,17 +14,22 @@ class ManageOrderScreen extends StatelessWidget {
       child: Scaffold(
         body: Row(
           children: [
-            CategorySideBar(
-
+            // Include your CategorySideBar widget here
+            CategorySideBar(),
+            Consumer<OrderProvider>(
+              builder: (context, controller, child) {
+                return Expanded(
+                  child: MenuContent(),
+                );
+              },
             ),
-            Consumer<OrderProvider>(builder: (context, controller, child) {
-              return Expanded(
-                child: MenuContent(),
-              );
-            }),
           ],
         ),
       ),
     );
   }
 }
+
+
+
+

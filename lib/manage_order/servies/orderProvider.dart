@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'category_model.dart';
+import 'orderModel.dart';
 import 'service.dart';
 
 class OrderProvider extends ChangeNotifier {
@@ -43,6 +44,25 @@ class OrderProvider extends ChangeNotifier {
         isExpanded: false),
     // Add more categories with their respective menu items
   ];
+
+  List<OrderItem> _orderItems = [];
+
+  List<OrderItem> get orderItems => _orderItems;
+
+  void addItem(OrderItem item) {
+    _orderItems.add(item);
+    notifyListeners();
+  }
+
+  void removeItem(OrderItem item) {
+    _orderItems.remove(item);
+    notifyListeners();
+  }
+
+  void clearOrder() {
+    _orderItems.clear();
+    notifyListeners();
+  }
 
   List<ModelCategory> get categories => _categories;
 
