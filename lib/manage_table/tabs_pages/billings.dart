@@ -57,21 +57,20 @@ class BillingContent extends StatelessWidget {
                             // You won't see infinite size error
                             children: List.generate(
                                 tableGroup[index].tables.length, (subIndex) {
-                              if("621677aaff99c9393c5894a2"==tableGroup[index].tables[subIndex].id){
-                                print(tableGroup[index].tables[subIndex].status.toString());
-                              }
+                              // if("621677aaff99c9393c5894a2"==tableGroup[index].tables[subIndex].id){
+                              //   print(tableGroup[index].tables[subIndex].status.toString());
+                              // }
                               return Padding(
                                 padding: const EdgeInsets.all(2.0),
                                 child: TableItem(
                                   onItemTap: (context, item) => {
                                     tableProvider.navigateToTable(context, item)
                                   },
-                                  showNotification: tableGroup[index]
-                                          .tables[subIndex]
-                                          .status !=1,
+                                  showNotification: false,
                                   animate: tableGroup[index]
                                           .tables[subIndex]
-                                          .status !=1,
+                                          .status !=
+                                      1,
                                   color: getTableStatusColor(tableGroup[index]
                                       .tables[subIndex]
                                       .status)!,
