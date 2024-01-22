@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:mynu/manage_order/servies/menu_model.dart' as MenuModel;
 
+import '../food_menu.dart';
 import 'category_model.dart';
 import 'hive_service.dart';
 import 'menu_model.dart';
@@ -14,8 +15,10 @@ class OrderProvider extends ChangeNotifier {
   final HiveService _hiveService = HiveService();
   List<MenuModel.Category> categories = [];
   List<OrderItem> _orderItems = [];
+  List<Item> _menuItems = [];
 
   List<OrderItem> get orderItems => _orderItems;
+  List<Item> get menuItems => _menuItems;
 
   Future<bool> isHiveEmpty() async {
     final box = await Hive.openBox<List<MenuModel.Category>>('menuBox');
@@ -38,6 +41,9 @@ class OrderProvider extends ChangeNotifier {
       MenuResponse response = await _hiveService.getSavedMenuResponseFromHive();
       categories = response.result!.categories!;
     }
+
+    categories[0].isExpanded = true;
+    setSelectedMenuItem(0, 0);
 
     notifyListeners();
   }
@@ -70,13 +76,13 @@ class OrderProvider extends ChangeNotifier {
 
   int get selectedCategoryIndex => _selectedCategoryIndex;
 
-  void setSelectedCategory(int index) {
-    if (_selectedCategoryIndex == index) {
+  void setSelectedCategory(int cat_index) {
+    if (_selectedCategoryIndex == cat_index) {
       // If it's the same category, deselect it
       _selectedCategoryIndex = -1;
     } else {
       // If it's a different category, select it
-      _selectedCategoryIndex = index;
+      _selectedCategoryIndex = cat_index;
     }
 
     // Notify listeners to rebuild UI
@@ -90,6 +96,9 @@ class OrderProvider extends ChangeNotifier {
     selectedMenuItems.removeWhere((key, value) => key != categoryIndex);
     // Set the selected menu item index for the current category
     selectedMenuItems[categoryIndex] = menuItemIndex;
+
+    _menuItems = categories[categoryIndex].groups![menuItemIndex].items!;
+    print(_menuItems);
     notifyListeners();
   }
 

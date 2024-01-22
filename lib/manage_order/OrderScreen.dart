@@ -7,10 +7,29 @@ class OrderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Row(
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Expanded(
-              child: OrderContent(),
+            Container(
+              width: double.infinity,
+              color: Colors.blue, // Set your desired color
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'Order',
+                  style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 16), // Adjust the top padding as needed
+              child: Row(
+                children: [
+                  Expanded(
+                    child: OrderContent(),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -18,6 +37,7 @@ class OrderScreen extends StatelessWidget {
     );
   }
 }
+
 
 class OrderContent extends StatefulWidget {
   const OrderContent({Key? key}) : super(key: key);

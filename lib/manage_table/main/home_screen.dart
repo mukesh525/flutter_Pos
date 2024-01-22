@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mynu/manage_table/main/sidebar.dart';
 import 'package:provider/provider.dart';
 import '../Utils.dart';
@@ -11,6 +12,11 @@ class ManageTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Lock the screen orientation to landscape
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
     TableProvider apiControllerProvider = Provider.of<TableProvider>(context);
 
     void onSideBarItem(index) async {
@@ -19,19 +25,32 @@ class ManageTable extends StatelessWidget {
 
     return SafeArea(
       child: Scaffold(
-        body: Row(
-          children: [
-            SideBar(
-              onTableClick: (int index) {
-                onSideBarItem(index);
-              },
-            ),
-            Consumer<TableProvider>(builder: (context, controller, child) {
-              return Expanded(
-                child: getTabScreen(controller.selectedItem),
+        body: OrientationBuilder(
+          builder: (context, orientation) {
+            if (orientation == Orientation.landscape) {
+              return Row(
+                children: [
+                  SideBar(
+                    onTableClick: (int index) {
+                      onSideBarItem(index);
+                    },
+                  ),
+                  Consumer<TableProvider>(
+                      builder: (context, controller, child) {
+                    return Expanded(
+                      child: getTabScreen(controller.selectedItem),
+                    );
+                  }),
+                ],
               );
-            }),
-          ],
+            } else {
+              return const Scaffold(
+                body: Center(
+                  child: Text('Rotate device to landscape mode',style: TextStyle(fontSize: 40,color: Colors.redAccent),),
+                ),
+              );
+            }
+          },
         ),
       ),
     );

@@ -14,13 +14,17 @@ class CategorySideBar extends StatelessWidget {
   Widget build(BuildContext context) {
     OrderProvider orderProvider = Provider.of<OrderProvider>(context);
 
+    ScrollController _scrollController = ScrollController();
+
+
+
     return Container(
-      width: 220.0,
+      width: 230.0,
       color: Colors.white60,
       height: double.infinity,
       child: ListView.builder(
+        controller: _scrollController,
         padding: EdgeInsets.zero,
-        physics: NeverScrollableScrollPhysics(),
         itemCount: orderProvider.categories.length,
         itemBuilder: (BuildContext context, int categoryIndex) {
           Category category = orderProvider.categories[categoryIndex];
@@ -32,6 +36,14 @@ class CategorySideBar extends StatelessWidget {
             dividerColor: Colors.blue,
             expansionCallback: (int panelIndex, bool isExpanded) {
               orderProvider.toggleCategoryExpansion(categoryIndex);
+
+              if (isExpanded) {
+                _scrollController.animateTo(
+                  _scrollController.position.maxScrollExtent,
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
+              }
             },
             children: [
               ExpansionPanel(
@@ -45,17 +57,17 @@ class CategorySideBar extends StatelessWidget {
                           : Colors.white60,
                       leading: Icon(
                         Icons.add_box,
-                        color: Colors.grey,
+                        color: Colors.black54,
                       ),
                       title: Container(
                         width: double.infinity,
                         child: Transform.translate(
                           offset: const Offset(-10, 0),
                           child: Text(
-                            category.name!,
+                            Uri.decodeComponent(category.name!),
                             style: TextStyle(
-                              fontSize: 15.0,
-                              color: Colors.grey,
+                              fontSize: 13.0,
+                              color: Colors.black,
                             ),
                             textAlign: TextAlign.start,
                           ),
@@ -71,20 +83,22 @@ class CategorySideBar extends StatelessWidget {
                 body: Column(
                   children: [
                     for (int menuIndex = 0;
-                        menuIndex < category.groups!.length;
-                        menuIndex++)
+                    menuIndex < category.groups!.length;
+                    menuIndex++)
                       Container(
                         color: menuIndex == selectedMenuItemIndex
                             ? Colors
-                                .orangeAccent // Set your desired selected color
+                            .orangeAccent // Set your desired selected color
                             : Colors.grey,
                         child: ListTile(
                           title: Text(
-                            category.groups![menuIndex].name!,
+                            Uri.decodeComponent(
+                                category.groups![menuIndex].name!),
                             style: TextStyle(
-                                color: Colors
-                                    .white // Set your desired selected color
-                                ),
+                              fontSize: 12,
+                              color: Colors
+                                  .white, // Set your desired selected color
+                            ),
                           ),
                           onTap: () {
                             // Handle menu item click

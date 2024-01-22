@@ -216,19 +216,21 @@ class Item {
 
   factory Item.fromJson(Map<String, dynamic> json) {
     print(json['dName']);
+
     return Item(
       id: json['_id'],
       name: json['name'],
       dName: json['dName'],
       description: json['description'],
-      price: json['price'],
-      discount: json['discount'],
-      taxRate: json['taxRate'],
+      price: json['price'] is int ? json['price'] : 0,
+      discount: json['discount'] is int ? json['discount'] : 0,
+      taxRate: json['taxRate'] is int ? json['taxRate'] : 0,
       feedbackType: json['feedbackType'] is int ? json['feedbackType'] : 0,
-      rating: json['rating'],
-      allergens: List<String>.from(json['allergens']),
-      hasAddons: json['hasAddons'],
-      isActive: json['isActive'],
+      rating: json['rating'] is double ? json['rating'] : 0.0,
+      allergens:
+          json['allergens'] == null ? [] : List<String>.from(json['allergens']),
+      hasAddons: json['hasAddons'] is bool ? json['hasAddons'] : false,
+      isActive: json['isActive'] is bool ? json['isActive'] : false,
       images: json['images'] != null
           ? List<ImageInfo>.from(
               json['images'].map((item) => ImageInfo.fromJson(item)))
@@ -262,8 +264,10 @@ class ImageInfo extends HiveObject {
   factory ImageInfo.fromJson(Map<String, dynamic> json) {
     return ImageInfo(
       url: json['url'],
-      height: json['height'],
-      width: json['width'],
+      // height: json['height'],
+      // width: json['width'],
+      height: 0,
+      width: 0,
       thumbnail: json['thumbnail'],
     );
   }

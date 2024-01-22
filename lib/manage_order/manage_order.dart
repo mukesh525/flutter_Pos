@@ -10,27 +10,32 @@ class ManageOrderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    OrderProvider orderProvider = Provider.of<OrderProvider>(context);
+
     return SafeArea(
       child: Scaffold(
-        body: Row(
+        body: orderProvider.categories.isEmpty
+            ? Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(), // Show loading indicator
+              SizedBox(height: 16),
+              Text('Loading data..', style: TextStyle(fontSize: 16)),
+            ],
+          ),
+        )
+            : Row(
           children: [
-            // Include your CategorySideBar widget here
             CategorySideBar(),
-            // Consumer<OrderProvider>(
-            //
-            //   builder: (context, controller, child) {
-            //     return Expanded(
-            //       child: MenuContent(),
-            //     );
-            //   },
-            // ),
+            Expanded(
+              child: MenuContent(),
+            ),
           ],
         ),
       ),
     );
   }
 }
-
-
-
 

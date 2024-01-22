@@ -21,7 +21,9 @@ class MenuContent extends StatelessWidget {
               Expanded(
                 child: FoodMenu(),
               ),
-              SizedBox(width: 0), // No spacing between Menu and Order
+              SizedBox(width: 0),
+              // Adjusted spacing between Menu and Order using SizedBox
+               // You can adjust the width as needed
               Expanded(
                 child: OrderScreen(),
               ),

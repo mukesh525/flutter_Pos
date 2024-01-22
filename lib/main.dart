@@ -5,6 +5,8 @@ import 'package:mynu/manage_order/servies/menu_model.dart';
 import 'package:mynu/manage_order/servies/orderProvider.dart';
 import 'package:provider/provider.dart';
 
+import 'manage_order/servies/menu_model.dart';
+import 'manage_order/servies/menu_model.dart';
 import 'manage_table/main/home_screen.dart';
 import 'manage_table/servies/model.dart' as MyNuModel;
 import 'manage_order/servies/menu_model.dart' as MyNewModel;
@@ -19,9 +21,17 @@ void main() async {
   Hive.init(appDocumentDir.path);
   Hive.registerAdapter<MyNuModel.TableGroup>(MyNuModel.TableGroupAdapter());
   Hive.registerAdapter<MyNuModel.Table>(MyNuModel.TableAdapter());
-  Hive.registerAdapter<MyNewModel.MenuResponse>(MyNewModel.MenuResponseAdapter());
 
-  await SystemChrome.setPreferredOrientations([
+  Hive.registerAdapter<MyNewModel.Category>(MyNewModel.CategoryAdapter());
+  Hive.registerAdapter<MyNewModel.Group>(MyNewModel.GroupAdapter());
+  Hive.registerAdapter<MyNewModel.Item>(MyNewModel.ItemAdapter());
+  Hive.registerAdapter<MyNewModel.ImageInfo>(MyNewModel.ImageInfoAdapter());
+  Hive.registerAdapter<MyNewModel.MenuResponse>(
+      MyNewModel.MenuResponseAdapter());
+  Hive.registerAdapter<MyNewModel.Result>(
+      MyNewModel.ResultAdapter());
+
+  SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
   ]);

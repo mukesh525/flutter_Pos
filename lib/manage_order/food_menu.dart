@@ -1,43 +1,97 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:mynu/manage_order/servies/orderProvider.dart';
+import 'package:provider/provider.dart';
 
 class FoodMenu extends StatelessWidget {
-  const FoodMenu({
-    Key? key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.red, // Set red background color
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Menu',
-                style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.white),
-              ),
-            ),
-            Expanded(
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount:4, // Number of columns in the grid
-                  crossAxisSpacing: 8.0, // Spacing between columns
-                  mainAxisSpacing: 8.0, // Spacing between rows
+    return Consumer<OrderProvider>(
+      builder: (context, orderProvider, child) {
+        final foodItems = orderProvider.menuItems ?? [];
+        return Container(
+       //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                width: double.infinity,
+                color: Colors.blue, // Set your desired color
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    'Menu',
+                    style: TextStyle(
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
                 ),
-                itemCount: sampleFoodItems.length,
-                itemBuilder: (context, index) {
-                  return FoodItemCard(foodItem: sampleFoodItems[index]);
-                },
               ),
-            ),
-          ],
-        ),
-      ),
+              Expanded(
+                child: Container(
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                      crossAxisSpacing: 8.0,
+                      mainAxisSpacing: 8.0,
+                    ),
+                    itemCount: foodItems.length,
+                    itemBuilder: (context, index) {
+                      return Stack(
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.green, // Set your desired border color
+                              ),
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  'https://source.unsplash.com/random/?food',
+                                ),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+                              child: Container(
+                                color: Colors.transparent,
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              padding: const EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.5), // Set your desired overlay color
+                              ),
+                              child: Text(
+                                Uri.decodeComponent(foodItems[index].name!),
+
+                                style: TextStyle(
+                                  fontSize: 13.0,
+                                  color: Colors.white,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -56,36 +110,26 @@ class FoodItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2.0,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.red, // Set red background color
+      ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(foodItem.name, style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
-          SizedBox(height: 8.0),
-          Text(foodItem.description, style: TextStyle(fontSize: 12.0)),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              'Menu',
+              style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+          ),
+          // Other content related to FoodItemCard
         ],
       ),
     );
   }
 }
-
-final List<FoodItem> sampleFoodItems = [
-  FoodItem(name: 'Pizza', description: 'Delicious pizza with cheese and toppings'),
-  FoodItem(name: 'Burger', description: 'Juicy burger with lettuce, tomato, and special sauce'),
-  FoodItem(name: 'Pasta', description: 'Classic pasta with marinara sauce and Parmesan cheese'),
-  FoodItem(name: 'Salad', description: 'Fresh salad with mixed greens and vinaigrette dressing'),
-  FoodItem(name: 'Pizza', description: 'Delicious pizza with cheese and toppings'),
-  FoodItem(name: 'Burger', description: 'Juicy burger with lettuce, tomato, and special sauce'),
-  FoodItem(name: 'Pasta', description: 'Classic pasta with marinara sauce and Parmesan cheese'),
-  FoodItem(name: 'Salad', description: 'Fresh salad with mixed greens and vinaigrette dressing'),
-  FoodItem(name: 'Pizza', description: 'Delicious pizza with cheese and toppings'),
-  FoodItem(name: 'Burger', description: 'Juicy burger with lettuce, tomato, and special sauce'),
-  FoodItem(name: 'Pasta', description: 'Classic pasta with marinara sauce and Parmesan cheese'),
-  FoodItem(name: 'Salad', description: 'Fresh salad with mixed greens and vinaigrette dressing'),
-  FoodItem(name: 'Pizza', description: 'Delicious pizza with cheese and toppings'),
-  FoodItem(name: 'Burger', description: 'Juicy burger with lettuce, tomato, and special sauce'),
-  FoodItem(name: 'Pasta', description: 'Classic pasta with marinara sauce and Parmesan cheese'),
-  FoodItem(name: 'Salad', description: 'Fresh salad with mixed greens and vinaigrette dressing'),
-  // Add more sample food items as needed
-];
