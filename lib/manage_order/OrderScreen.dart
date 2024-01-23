@@ -39,6 +39,7 @@ class OrderScreen extends StatelessWidget {
                     child: Container(
                       //color: Colors.red,
                       padding: EdgeInsets.all(8.0),
+                      margin: EdgeInsets.only(left: 0),
                       child: Text(
                         "Name",
                         style: TextStyle(color: Colors.black),
@@ -48,18 +49,14 @@ class OrderScreen extends StatelessWidget {
                   SizedBox(width: 4.0),
                   Expanded(
                     child: Container(
-                      //  color: Colors.green,
-                      //padding: EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              ' Quantity',
-                              style: TextStyle(fontSize: 15),
-                            ),
-                          ],
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            ' Quantity',
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -68,11 +65,11 @@ class OrderScreen extends StatelessWidget {
                     child: Container(
                       // color: Colors.blue,
                       padding: EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(
-                          'Price',
-                          style: TextStyle(color: Colors.black),
-                        ),
+                      margin: EdgeInsets.only(left: 35.0),
+
+                      child: Text(
+                        'Price',
+                        style: TextStyle(color: Colors.black),
                       ),
                     ),
                   ),
@@ -151,7 +148,7 @@ class OrderScreen extends StatelessWidget {
               padding: EdgeInsets.all(8.0),
               child: Center(
                 child: Text(
-                  '\$ ${item.quantity * item.price}' ,
+                  '\$ ${item.quantity * item.price}',
                   style: TextStyle(color: Colors.black),
                 ),
               ),
