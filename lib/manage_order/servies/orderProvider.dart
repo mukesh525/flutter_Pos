@@ -61,7 +61,7 @@ class OrderProvider extends ChangeNotifier {
       _orderItems.add(item);
     } else {
       int index =
-      _orderItems.indexWhere((element) => element.name == item.name);
+          _orderItems.indexWhere((element) => element.name == item.name);
       if (index != -1) {
         _orderItems[index].quantity = _orderItems[index].quantity + 1;
       }
@@ -156,9 +156,9 @@ class OrderProvider extends ChangeNotifier {
     }
 
     categories[categoryIndex].isExpanded =
-    !categories[categoryIndex].isExpanded;
+        !categories[categoryIndex].isExpanded;
     expandedCategoryIndex =
-    categories[categoryIndex].isExpanded ? categoryIndex : null;
+        categories[categoryIndex].isExpanded ? categoryIndex : null;
 
     notifyListeners();
   }
@@ -174,7 +174,7 @@ class OrderProvider extends ChangeNotifier {
     final printer = NetworkPrinter(paper, profile);
 
     final PosPrintResult res =
-    await printer.connect('192.168.0.123', port: 9100);
+        await printer.connect('192.168.0.123', port: 9100);
 
     if (res == PosPrintResult.success) {
       printReceipt(printer, "Mynu", orderItems);
@@ -184,27 +184,30 @@ class OrderProvider extends ChangeNotifier {
     print('Print result: ${res.msg}');
   }
 
-  void printReceipt(NetworkPrinter printer, String storeName, List<OrderItem> orderItems) {
+  void printReceipt(
+      NetworkPrinter printer, String storeName, List<OrderItem> orderItems) {
     // Print store name
-    printer.text(storeName, styles: PosStyles(align: PosAlign.center, bold: true));
+    printer.text(storeName,
+        styles: PosStyles(align: PosAlign.center, bold: true));
     printer.feed(1);
 
     // Print order items
     for (OrderItem orderItem in orderItems) {
       printer.text(orderItem.name, styles: PosStyles(align: PosAlign.left));
-      printer.text('${orderItem.quantity} x ${orderItem.price} \$', styles: PosStyles(align: PosAlign.left));
-      printer.text('${orderItem.quantity * orderItem.price} \$', styles: PosStyles(align: PosAlign.left));
+      printer.text('${orderItem.quantity} x ${orderItem.price} \$',
+          styles: PosStyles(align: PosAlign.left));
+      printer.text('${orderItem.quantity * orderItem.price} \$',
+          styles: PosStyles(align: PosAlign.left));
     }
 
     // Print total value with currency symbol
-    double totalValue = orderItems.fold(0.0, (sum, item) => sum + (item.quantity * item.price).toDouble());
-    printer.text('Total Value: ${totalValue.toStringAsFixed(2)} \$', styles: PosStyles(align: PosAlign.left));
+    double totalValue = orderItems.fold(
+        0.0, (sum, item) => sum + (item.quantity * item.price).toDouble());
+    printer.text('Total Value: ${totalValue.toStringAsFixed(2)} \$',
+        styles: PosStyles(align: PosAlign.left));
 
     // Additional formatting or cutting if needed
     printer.feed(2);
     printer.cut();
   }
-
-
-
-
+}
