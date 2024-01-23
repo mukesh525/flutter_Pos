@@ -151,7 +151,7 @@ class OrderScreen extends StatelessWidget {
               padding: EdgeInsets.all(8.0),
               child: Center(
                 child: Text(
-                  {item.quantity * item.price}.toString(),
+                  '\$ ${item.quantity * item.price}' ,
                   style: TextStyle(color: Colors.black),
                 ),
               ),
@@ -183,8 +183,8 @@ class TotalValue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double totalValue =
-        orderItems.fold(0.0, (sum, item) => sum + (item.quantity* item.price).toDouble());
+    double totalValue = orderItems.fold(
+        0.0, (sum, item) => sum + (item.quantity * item.price).toDouble());
 
     return Container(
       padding: EdgeInsets.all(16.0),
@@ -196,12 +196,56 @@ class TotalValue extends StatelessWidget {
               style: TextStyle(color: Colors.white)),
           ElevatedButton(
             onPressed: () {
-              // Handle button press if needed
+              // Show the order details when the button is pressed
+              showOrderDialog(context, orderItems, totalValue);
             },
             child: Text('Place Order'),
           ),
         ],
       ),
+    );
+  }
+
+  void showOrderDialog(
+      BuildContext context, List<OrderItem> orderItems, double totalValue) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Order Details'),
+          content: Column(
+            children: [
+              // Display order details in the dialog
+              for (var item in orderItems)
+                ListTile(
+                  title: Text(
+                      '${Uri.decodeComponent(item.name)} x${item.quantity}'),
+                  subtitle: Text(
+                      '\$${(item.quantity * item.price).toStringAsFixed(2)}'),
+                ),
+              Divider(),
+              ListTile(
+                title: Text('Total Value: \$${totalValue.toStringAsFixed(2)}'),
+              ),
+            ],
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                // Handle placing the order, e.g., send it to a server
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Place Order'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
