@@ -42,6 +42,8 @@ dependencies:
   provider: ^6.1.1
   http: ^0.13.3
   socket_io_client: ^2.0.3+1
+  esc_pos_printer: ^4.1.0
+  epson_epos: ^0.0.2
 
 
 dev_dependencies:

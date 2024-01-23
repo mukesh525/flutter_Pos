@@ -14,6 +14,12 @@
       "languageVersion": "2.19"
     },
     {
+      "name": "archive",
+      "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/archive-3.4.10",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "args",
       "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/args-2.4.2",
       "packageUri": "lib/",
@@ -86,6 +92,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "charset_converter",
+      "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/charset_converter-2.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "checked_yaml",
       "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/checked_yaml-2.0.3",
       "packageUri": "lib/",
@@ -122,6 +134,12 @@
       "languageVersion": "2.19"
     },
     {
+      "name": "csslib",
+      "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/csslib-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
       "name": "cupertino_icons",
       "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/cupertino_icons-1.0.6",
       "packageUri": "lib/",
@@ -132,6 +150,24 @@
       "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/dart_style-2.3.2",
       "packageUri": "lib/",
       "languageVersion": "2.19"
+    },
+    {
+      "name": "epson_epos",
+      "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/epson_epos-0.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
+    },
+    {
+      "name": "esc_pos_printer",
+      "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/esc_pos_printer-4.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "esc_pos_utils",
+      "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/esc_pos_utils-1.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "fake_async",
@@ -182,6 +218,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "gbk_codec",
+      "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/gbk_codec-0.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.13"
+    },
+    {
       "name": "glob",
       "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/glob-2.1.2",
       "packageUri": "lib/",
@@ -192,6 +234,12 @@
       "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/graphs-2.3.1",
       "packageUri": "lib/",
       "languageVersion": "2.18"
+    },
+    {
+      "name": "hex",
+      "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/hex-0.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "hive",
@@ -212,6 +260,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "html",
+      "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/html-0.15.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
       "name": "http",
       "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/http-0.13.6",
       "packageUri": "lib/",
@@ -228,6 +282,12 @@
       "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/http_parser-4.0.2",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "image",
+      "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/image-3.3.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
     },
     {
       "name": "io",
@@ -338,6 +398,12 @@
       "languageVersion": "2.19"
     },
     {
+      "name": "petitparser",
+      "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/petitparser-5.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
       "name": "platform",
       "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/platform-3.1.3",
       "packageUri": "lib/",
@@ -348,6 +414,12 @@
       "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/plugin_platform_interface-2.1.6",
       "packageUri": "lib/",
       "languageVersion": "2.19"
+    },
+    {
+      "name": "pointycastle",
+      "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/pointycastle-3.7.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
     },
     {
       "name": "pool",
@@ -500,6 +572,12 @@
       "languageVersion": "2.19"
     },
     {
+      "name": "xml",
+      "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/xml-6.2.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
       "name": "yaml",
       "rootUri": "file:///Users/mukeshjha/.pub-cache/hosted/pub.dev/yaml-3.1.2",
       "packageUri": "lib/",
@@ -512,7 +590,7 @@
       "languageVersion": "2.19"
     }
   ],
-  "generated": "2024-01-23T06:33:41.657362Z",
+  "generated": "2024-01-23T06:51:11.289519Z",
   "generator": "pub",
   "generatorVersion": "2.19.6"
 }
