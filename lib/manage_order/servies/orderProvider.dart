@@ -187,8 +187,13 @@ class OrderProvider extends ChangeNotifier {
   void printReceipt(
       NetworkPrinter printer, String storeName, List<OrderItem> orderItems) {
     // Print store name
-    printer.text(storeName,
-        styles: PosStyles(align: PosAlign.center, bold: true));
+    // Print store icon
+    // printer.text('🏠', styles: PosStyles(align: PosAlign.center, bold: true));
+    // printer.feed(1);
+
+    // Print store name and address
+    printer.text(storeName, styles: PosStyles(align: PosAlign.center, bold: true));
+    printer.text("storeAddress", styles: PosStyles(align: PosAlign.center));
     printer.feed(1);
 
     // Print order items
