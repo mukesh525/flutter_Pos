@@ -1,104 +1,169 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:mynu/manage_order/servies/orderProvider.dart';
 import 'package:provider/provider.dart';
 
 class OrderScreen extends StatelessWidget {
-  const OrderScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              width: double.infinity,
-              color: Colors.blue, // Set your desired color
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  'Order',
-                  style: TextStyle(
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-              ),
+    return Scaffold(
+      body: Consumer<OrderProvider>(builder: (context, orderProvider, child) {
+        final orderItems = orderProvider.orderItems ?? [];
+        if (orderItems.isEmpty) {
+          return Center(
+            child: Text(
+              'Add orders to proceed',
+              style: TextStyle(fontSize: 18.0),
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 16),
-              // Adjust the top padding as needed
+          );
+        }
+        return Column(
+          children: [
+            // Fixed Header
+            Container(
+              padding: EdgeInsets.only(top: 5, bottom: 0),
               child: Row(
                 children: [
+                  Container(
+                    padding: EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Text(
+                        'Slno',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 1.0),
                   Expanded(
-                    child: OrderContent(),
+                    child: Container(
+                      //color: Colors.red,
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        "Name",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 4.0),
+                  Expanded(
+                    child: Container(
+                      //  color: Colors.green,
+                      //padding: EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              ' Quantity',
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 4.0),
+                  Expanded(
+                    child: Container(
+                      // color: Colors.blue,
+                      padding: EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Text(
+                          'Price',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: orderItems.length,
+                itemBuilder: (context, index) {
+                  return buildRow(
+                      orderItems[index],
+                      index,
+                      () => {orderProvider.addQuantity(orderItems[index])},
+                      () => {orderProvider.reduceQuantity(orderItems[index])});
+                },
+              ),
+            ),
+            // Fixed Footer
+            TotalValue(orderItems: orderProvider.orderItems),
           ],
-        ),
-      ),
+        );
+      }),
     );
   }
-}
 
-class OrderContent extends StatefulWidget {
-  const OrderContent({Key? key}) : super(key: key);
-
-  @override
-  _OrderContentState createState() => _OrderContentState();
-}
-
-class _OrderContentState extends State<OrderContent> {
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Consumer<OrderProvider>(
-        builder: (context, orderProvider, child) {
-          final orderItems = orderProvider.orderItems ?? [];
-          if (orderItems.isEmpty) {
-            return Center(
+  Widget buildRow(OrderItem item, int index, onAdd, onSub) {
+    return Container(
+      padding: EdgeInsets.all(2.0),
+      child: Row(
+        children: [
+          Container(
+            padding: EdgeInsets.all(8.0),
+            child: Center(
               child: Text(
-                'Add orders to proceed',
-                style: TextStyle(fontSize: 18.0),
+                '${(index + 1).toString().padLeft(2, '0')}',
+                style: TextStyle(color: Colors.black54),
               ),
-            );
-          }
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Header Row
-              DataTable(
-                columns: OrderItem.columns,
-                rows: [
-                  for (var item in orderItems)
-                    item.buildDataRow(
-                      () => updateQuantity(item),
-                      item.quantity,
+            ),
+          ),
+          SizedBox(width: 1.0),
+          Expanded(
+            child: Container(
+              //color: Colors.red,
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                Uri.decodeComponent(item.name),
+                style: TextStyle(color: Colors.black54),
+              ),
+            ),
+          ),
+          SizedBox(width: 4.0),
+          Expanded(
+            child: Container(
+              //  color: Colors.green,
+              //padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(icon: Icon(Icons.remove), onPressed: onSub),
+                    Text(
+                      ' ${item.quantity}',
+                      style: TextStyle(fontSize: 15),
                     ),
-                ],
+                    IconButton(icon: Icon(Icons.add), onPressed: onAdd),
+                  ],
+                ),
               ),
-              SizedBox(height: 16.0),
-              // Add some space between DataTable and TotalValue
-              Align(
-                alignment: FractionalOffset.bottomRight,
-                child: TotalValue(orderItems: orderItems),
+            ),
+          ),
+          SizedBox(width: 4.0),
+          Expanded(
+            child: Container(
+              // color: Colors.blue,
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  {item.quantity * item.price}.toString(),
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
-            ],
-          );
-        },
+            ),
+          ),
+        ],
       ),
     );
   }
-
-  void updateQuantity(OrderItem item) {
-    setState(() {});
-  }
 }
 
-class OrderItem extends StatefulWidget {
+class OrderItem {
   final String id;
   final String name;
   final double price;
@@ -106,84 +171,9 @@ class OrderItem extends StatefulWidget {
 
   OrderItem({
     required this.name,
-    required this.price, required this.id,
+    required this.price,
+    required this.id,
   });
-
-  DataRow buildDataRow(VoidCallback updateQuantity, int quantity) {
-    return DataRow(
-      cells: [
-        DataCell(Text(Uri.decodeComponent(name))),
-        // DataCell(Icon(Icons.check)),
-        DataCell(
-          Row(
-            children: [
-              IconButton(
-                icon: Icon(Icons.remove),
-                onPressed: () {
-                  // setState(() {
-                  //   if (quantity > 0) {
-                  //     quantity--;
-                  //     updateQuantity();
-                  //   }
-                  // }
-                  // );
-                },
-              ),
-              Text('$quantity'),
-              IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () {
-                  // setState(() {
-                  //   quantity++;
-                  //   updateQuantity();
-                  // });
-                },
-              ),
-            ],
-          ),
-        ),
-        DataCell(Text('\$${(price * quantity).toStringAsFixed(2)}')),
-      ],
-    );
-  }
-
-  double get totalPrice => price * quantity; // Getter for total price
-
-  static final List<DataColumn> columns = [
-    DataColumn(label: Text('Items')),
-    // DataColumn(label: Text('Quantity')),
-    DataColumn(
-      label: Container(
-        width: 100,
-        //color: Colors.blue, // Set the background color here
-        child: Center(
-          child: Text('Qty'),
-        ),
-      ),
-      numeric: false, // make the column numeric
-      tooltip: 'Quantity',
-    ),
-    DataColumn(label: Text('Price')),
-  ];
-
-  @override
-  _DummyOrderItemState createState() => _DummyOrderItemState();
-}
-
-class _DummyOrderItemState extends State<OrderItem> {
-  @override
-  Widget build(BuildContext context) {
-    return DataTable(
-      columns: [], // Empty columns as we want to reuse the header
-      rows: [
-        widget.buildDataRow(() => updateQuantity(widget), widget.quantity),
-      ],
-    );
-  }
-
-  void updateQuantity(OrderItem item) {
-    setState(() {});
-  }
 }
 
 class TotalValue extends StatelessWidget {
@@ -194,7 +184,7 @@ class TotalValue extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double totalValue =
-        orderItems.fold(0.0, (sum, item) => sum + item.totalPrice);
+        orderItems.fold(0.0, (sum, item) => sum + (item.quantity* item.price).toDouble());
 
     return Container(
       padding: EdgeInsets.all(16.0),

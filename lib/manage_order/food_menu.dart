@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class FoodMenu extends StatelessWidget {
                           // Handle item tap here
                           print('Item tapped: ${foodItems[index].id}');
                           OrderItem item = OrderItem(
-                            price: foodItems[index].price!,
+                            price: double.parse(foodItems[index].price!),
                             name: foodItems[index].name!,
                             id: "",
                           );

@@ -37,7 +37,7 @@ class OrderProvider extends ChangeNotifier {
       try {
         //await Hive.box('menu_response').clear();
         MenuResponse response = await _tableService.fetchDataFromUrl();
-        // await _hiveService.saveMenuResponseToHive(response);
+        await _hiveService.saveMenuResponseToHive(response);
         categories = response.result!.categories!;
       } catch (e) {
         print('Error fetching data from API: $e');
@@ -57,8 +57,45 @@ class OrderProvider extends ChangeNotifier {
     bool itemExists = _orderItems.any((_item) => _item.name == item.name);
     if (!itemExists) {
       _orderItems.add(item);
+    } else {
+      int index =
+          _orderItems.indexWhere((element) => element.name == item.name);
+      if (index != -1) {
+        _orderItems[index].quantity = _orderItems[index].quantity + 1;
+      }
+    }
+    notifyListeners();
+  }
+
+  void reduceQuantity(OrderItem item) {
+    int index = _orderItems.indexWhere((element) => element.name == item.name);
+
+    if (index != -1) {
+      _orderItems[index].quantity = _orderItems[index].quantity - 1;
+
+      if (_orderItems[index].quantity <= 0) {
+        _orderItems.removeAt(index);
+      }
+
       notifyListeners();
     }
+  }
+
+  void addQuantity(OrderItem item) {
+    int index = _orderItems.indexWhere((element) => element.name == item.name);
+
+    if (index != -1) {
+      _orderItems[index].quantity = _orderItems[index].quantity + 1;
+      notifyListeners();
+    }
+  }
+
+  void updateItemQuantity(OrderItem item) {
+    bool itemExists = _orderItems.any((_item) => _item.name == item.name);
+    // if (itemExists) {
+    //   _orderItems.add(itemExists);
+    //   notifyListeners();
+    // }
   }
 
   void removeItem(OrderItem item) {

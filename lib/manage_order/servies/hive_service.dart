@@ -5,7 +5,7 @@ import 'menu_model.dart';
 class HiveService {
   Future<void> saveMenuResponseToHive(MenuResponse menuResponse) async {
     // Open Hive box for MenuResponse
-    var box = await Hive.openBox<MenuResponse>('menu_response');
+    var box = await Hive.openBox<MenuResponse>('menu_response_');
 
     // Clear existing data
     await box.clear();
@@ -19,7 +19,7 @@ class HiveService {
 
   Future<MenuResponse> getSavedMenuResponseFromHive() async {
     // Open Hive box for MenuResponse
-    var box = await Hive.openBox<MenuResponse>('menu_response');
+    var box = await Hive.openBox<MenuResponse>('menu_response_');
 
     // Get MenuResponse from Hive
     MenuResponse menuResponse = box.values.first;

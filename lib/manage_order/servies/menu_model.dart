@@ -168,7 +168,7 @@ class Item {
   String? description;
 
   @HiveField(4)
-  double? price = 1.5;
+  String? price = '1.5';
 
   @HiveField(5)
   int? discount;
@@ -180,7 +180,7 @@ class Item {
   int? feedbackType;
 
   @HiveField(8)
-  double? rating;
+  String? rating;
 
   @HiveField(9)
   List<String>? allergens;
@@ -222,11 +222,11 @@ class Item {
       name: json['name'],
       dName: json['dName'],
       description: json['description'],
-      price: json['price'] is double ? json['price'] : 0.0,
+      price: json['price'] !=null ?json['price'].toString():'0.0',
       discount: json['discount'] is int ? json['discount'] : 0,
       taxRate: json['taxRate'] is int ? json['taxRate'] : 0,
       feedbackType: json['feedbackType'] is int ? json['feedbackType'] : 0,
-      rating: json['rating'] is double ? json['rating'] : 0.0,
+      rating: json['rating'] is double ? json['rating'].toString() : '0.0',
       allergens:
           json['allergens'] == null ? [] : List<String>.from(json['allergens']),
       hasAddons: json['hasAddons'] is bool ? json['hasAddons'] : false,
