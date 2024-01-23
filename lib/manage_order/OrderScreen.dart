@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mynu/manage_order/servies/orderProvider.dart';
+import 'package:provider/provider.dart';
 
 class OrderScreen extends StatelessWidget {
   const OrderScreen({Key? key}) : super(key: key);
@@ -17,12 +19,16 @@ class OrderScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   'Order',
-                  style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: 16), // Adjust the top padding as needed
+              padding: EdgeInsets.only(top: 16),
+              // Adjust the top padding as needed
               child: Row(
                 children: [
                   Expanded(
@@ -38,7 +44,6 @@ class OrderScreen extends StatelessWidget {
   }
 }
 
-
 class OrderContent extends StatefulWidget {
   const OrderContent({Key? key}) : super(key: key);
 
@@ -47,61 +52,67 @@ class OrderContent extends StatefulWidget {
 }
 
 class _OrderContentState extends State<OrderContent> {
-  List<DummyOrderItem> dummyItems = [
-    DummyOrderItem(name: 'Burger', price: 10.0),
-    DummyOrderItem(name: 'Pizza', price: 15.0),
-    DummyOrderItem(name: 'Salad', price: 20.0),
-    // Add more dummy items as needed
-  ];
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // Header Row
-          DataTable(
-            columns: DummyOrderItem.columns,
-            rows: [
-              for (var item in dummyItems)
-                item.buildDataRow(
-                  () => updateQuantity(item),
-                  item.quantity,
-                ),
+      child: Consumer<OrderProvider>(
+        builder: (context, orderProvider, child) {
+          final orderItems = orderProvider.orderItems ?? [];
+          if (orderItems.isEmpty) {
+            return Center(
+              child: Text(
+                'Add orders to proceed',
+                style: TextStyle(fontSize: 18.0),
+              ),
+            );
+          }
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Header Row
+              DataTable(
+                columns: OrderItem.columns,
+                rows: [
+                  for (var item in orderItems)
+                    item.buildDataRow(
+                      () => updateQuantity(item),
+                      item.quantity,
+                    ),
+                ],
+              ),
+              SizedBox(height: 16.0),
+              // Add some space between DataTable and TotalValue
+              Align(
+                alignment: FractionalOffset.bottomRight,
+                child: TotalValue(orderItems: orderItems),
+              ),
             ],
-          ),
-          SizedBox(height: 16.0), // Add some space between DataTable and TotalValue
-          Align(
-            alignment: FractionalOffset.bottomRight,
-            child: TotalValue(dummyItems: dummyItems),
-          )
-        ],
+          );
+        },
       ),
-
-
     );
   }
 
-  void updateQuantity(DummyOrderItem item) {
+  void updateQuantity(OrderItem item) {
     setState(() {});
   }
 }
 
-class DummyOrderItem extends StatefulWidget {
+class OrderItem extends StatefulWidget {
+  final String id;
   final String name;
   final double price;
   int quantity = 1;
 
-  DummyOrderItem({
+  OrderItem({
     required this.name,
-    required this.price,
+    required this.price, required this.id,
   });
 
   DataRow buildDataRow(VoidCallback updateQuantity, int quantity) {
     return DataRow(
       cells: [
-        DataCell(Text(name)),
+        DataCell(Text(Uri.decodeComponent(name))),
         // DataCell(Icon(Icons.check)),
         DataCell(
           Row(
@@ -135,6 +146,7 @@ class DummyOrderItem extends StatefulWidget {
       ],
     );
   }
+
   double get totalPrice => price * quantity; // Getter for total price
 
   static final List<DataColumn> columns = [
@@ -158,7 +170,7 @@ class DummyOrderItem extends StatefulWidget {
   _DummyOrderItemState createState() => _DummyOrderItemState();
 }
 
-class _DummyOrderItemState extends State<DummyOrderItem> {
+class _DummyOrderItemState extends State<OrderItem> {
   @override
   Widget build(BuildContext context) {
     return DataTable(
@@ -169,18 +181,20 @@ class _DummyOrderItemState extends State<DummyOrderItem> {
     );
   }
 
-  void updateQuantity(DummyOrderItem item) {
+  void updateQuantity(OrderItem item) {
     setState(() {});
   }
 }
-class TotalValue extends StatelessWidget {
-  final List<DummyOrderItem> dummyItems;
 
-  const TotalValue({Key? key, required this.dummyItems}) : super(key: key);
+class TotalValue extends StatelessWidget {
+  final List<OrderItem> orderItems;
+
+  const TotalValue({Key? key, required this.orderItems}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    double totalValue = dummyItems.fold(0.0, (sum, item) => sum + item.totalPrice);
+    double totalValue =
+        orderItems.fold(0.0, (sum, item) => sum + item.totalPrice);
 
     return Container(
       padding: EdgeInsets.all(16.0),
@@ -188,7 +202,8 @@ class TotalValue extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text('Total Value: \$${totalValue.toStringAsFixed(2)}', style: TextStyle(color: Colors.white)),
+          Text('Total Value: \$${totalValue.toStringAsFixed(2)}',
+              style: TextStyle(color: Colors.white)),
           ElevatedButton(
             onPressed: () {
               // Handle button press if needed

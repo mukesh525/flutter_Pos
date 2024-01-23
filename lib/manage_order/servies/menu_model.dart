@@ -168,7 +168,7 @@ class Item {
   String? description;
 
   @HiveField(4)
-  int? price;
+  double? price = 1.5;
 
   @HiveField(5)
   int? discount;
@@ -215,14 +215,14 @@ class Item {
   });
 
   factory Item.fromJson(Map<String, dynamic> json) {
-    print(json['dName']);
+    print(json['Name']);
 
     return Item(
       id: json['_id'],
       name: json['name'],
       dName: json['dName'],
       description: json['description'],
-      price: json['price'] is int ? json['price'] : 0,
+      price: json['price'] is double ? json['price'] : 0.0,
       discount: json['discount'] is int ? json['discount'] : 0,
       taxRate: json['taxRate'] is int ? json['taxRate'] : 0,
       feedbackType: json['feedbackType'] is int ? json['feedbackType'] : 0,

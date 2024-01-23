@@ -4,14 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:mynu/manage_order/servies/orderProvider.dart';
 import 'package:provider/provider.dart';
 
+import 'OrderScreen.dart';
+
 class FoodMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<OrderProvider>(
       builder: (context, orderProvider, child) {
         final foodItems = orderProvider.menuItems ?? [];
+
         return Container(
-       //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          // padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -23,9 +26,10 @@ class FoodMenu extends StatelessWidget {
                   child: Text(
                     'Menu',
                     style: TextStyle(
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -39,50 +43,63 @@ class FoodMenu extends StatelessWidget {
                     ),
                     itemCount: foodItems.length,
                     itemBuilder: (context, index) {
-                      return Stack(
-                        children: [
-                          Container(
-                            width: double.infinity,
-                            height: double.infinity,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.green, // Set your desired border color
-                              ),
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                  'https://source.unsplash.com/random/?food',
-                                ),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-                              child: Container(
-                                color: Colors.transparent,
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: Container(
-                              padding: const EdgeInsets.all(8.0),
+                      return GestureDetector(
+                        onTap: () {
+                          // Handle item tap here
+                          print('Item tapped: ${foodItems[index].id}');
+                          OrderItem item = OrderItem(
+                            price: foodItems[index].price!,
+                            name: foodItems[index].name!,
+                            id: "",
+                          );
+                          orderProvider.addItem(item);
+                        },
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: double.infinity,
                               decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.5), // Set your desired overlay color
-                              ),
-                              child: Text(
-                                Uri.decodeComponent(foodItems[index].name!),
-
-                                style: TextStyle(
-                                  fontSize: 13.0,
-                                  color: Colors.white,
+                                border: Border.all(
+                                  color: Colors
+                                      .green, // Set your desired border color
                                 ),
-                                textAlign: TextAlign.center,
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                    'https://source.unsplash.com/random/?food',
+                                  ),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              child: BackdropFilter(
+                                filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+                                child: Container(
+                                  color: Colors.transparent,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                            Positioned(
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              child: Container(
+                                padding: const EdgeInsets.all(8.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.black.withOpacity(
+                                      0.5), // Set your desired overlay color
+                                ),
+                                child: Text(
+                                  Uri.decodeComponent(foodItems[index].name!),
+                                  style: TextStyle(
+                                    fontSize: 13.0,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       );
                     },
                   ),

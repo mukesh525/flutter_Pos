@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:mynu/manage_order/servies/menu_model.dart' as MenuModel;
 
-import '../food_menu.dart';
-import 'category_model.dart';
+import '../OrderScreen.dart';
 import 'hive_service.dart';
 import 'menu_model.dart';
 import 'orderModel.dart';
@@ -14,10 +13,15 @@ class OrderProvider extends ChangeNotifier {
   TableService _tableService = TableService();
   final HiveService _hiveService = HiveService();
   List<MenuModel.Category> categories = [];
-  List<OrderItem> _orderItems = [];
+
   List<Item> _menuItems = [];
+  int? expandedCategoryIndex = 0;
+  List<OrderItem> _orderItems = [
+    // Add more dummy items as needed
+  ];
 
   List<OrderItem> get orderItems => _orderItems;
+
   List<Item> get menuItems => _menuItems;
 
   Future<bool> isHiveEmpty() async {
@@ -31,8 +35,9 @@ class OrderProvider extends ChangeNotifier {
     final _isHiveEmpty = await isHiveEmpty();
     if (_isHiveEmpty) {
       try {
+        //await Hive.box('menu_response').clear();
         MenuResponse response = await _tableService.fetchDataFromUrl();
-        await _hiveService.saveMenuResponseToHive(response);
+        // await _hiveService.saveMenuResponseToHive(response);
         categories = response.result!.categories!;
       } catch (e) {
         print('Error fetching data from API: $e');
@@ -49,8 +54,11 @@ class OrderProvider extends ChangeNotifier {
   }
 
   void addItem(OrderItem item) {
-    _orderItems.add(item);
-    notifyListeners();
+    bool itemExists = _orderItems.any((_item) => _item.name == item.name);
+    if (!itemExists) {
+      _orderItems.add(item);
+      notifyListeners();
+    }
   }
 
   void removeItem(OrderItem item) {
@@ -99,12 +107,20 @@ class OrderProvider extends ChangeNotifier {
 
     _menuItems = categories[categoryIndex].groups![menuItemIndex].items!;
     print(_menuItems);
+
     notifyListeners();
   }
 
   void toggleCategoryExpansion(int categoryIndex) {
+    if (expandedCategoryIndex != null) {
+      categories[expandedCategoryIndex!].isExpanded = false;
+    }
+
     categories[categoryIndex].isExpanded =
         !categories[categoryIndex].isExpanded;
+    expandedCategoryIndex =
+        categories[categoryIndex].isExpanded ? categoryIndex : null;
+
     notifyListeners();
   }
 

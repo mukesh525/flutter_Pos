@@ -18,24 +18,40 @@ class ManageOrderScreen extends StatelessWidget {
             ? Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CircularProgressIndicator(), // Show loading indicator
-              SizedBox(height: 16),
-              Text('Loading data..', style: TextStyle(fontSize: 16)),
+              CircularProgressIndicator(),
+              SizedBox(height: 16.0),
+              Text("Loading data..."),
             ],
           ),
         )
-            : Row(
-          children: [
-            CategorySideBar(),
-            Expanded(
-              child: MenuContent(),
-            ),
-          ],
+            : OrientationBuilder(
+          builder: (context, orientation) {
+            return orientation == Orientation.portrait
+                ? _buildPortraitLayout()
+                : _buildLandscapeLayout();
+          },
         ),
       ),
     );
   }
-}
 
+  Widget _buildPortraitLayout() {
+    return const Scaffold(
+        body: Center(
+        child: Text('Rotate device to landscape mode',style: TextStyle(fontSize: 40,color: Colors.redAccent),),
+    ));
+  }
+
+  Widget _buildLandscapeLayout() {
+    return Row(
+      children: [
+        CategorySideBar(),
+        Expanded(
+          child: MenuContent(),
+        ),
+        // Additional widget for landscape mode, if needed
+      ],
+    );
+  }
+}

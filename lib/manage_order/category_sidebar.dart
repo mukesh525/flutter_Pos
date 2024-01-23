@@ -38,6 +38,7 @@ class CategorySideBar extends StatelessWidget {
               orderProvider.toggleCategoryExpansion(categoryIndex);
 
               if (isExpanded) {
+                print("Scroll to "+_scrollController.position.maxScrollExtent.toString());
                 _scrollController.animateTo(
                   _scrollController.position.maxScrollExtent,
                   duration: Duration(milliseconds: 300),

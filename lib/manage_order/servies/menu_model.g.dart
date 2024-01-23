@@ -205,7 +205,7 @@ class ItemAdapter extends TypeAdapter<Item> {
       name: fields[1] as String?,
       dName: fields[2] as String?,
       description: fields[3] as String?,
-      price: fields[4] as int?,
+      price: fields[4] as double?,
       discount: fields[5] as int?,
       taxRate: fields[6] as int?,
       feedbackType: fields[7] as int?,
